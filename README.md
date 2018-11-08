@@ -4,6 +4,11 @@ MetaTx have proved to be an useful tool for quite a lot use cases. One of the ma
 
 ## How to run it
 ```
+npm install -g etherlime
+etherlime ganache
+```
+
+```
 npm install
 npm start
 ```
