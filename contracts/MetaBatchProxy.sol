@@ -40,7 +40,9 @@ contract MetaBatchProxy {
 	function execute(address[] memory target, uint256[] memory value, bytes[] memory data, bytes[] memory dataHashSignature) public onlyValidSignature(target, value, data, dataHashSignature) returns (bool) {
 		// solium-disable-next-line security/no-call-value
 		for(uint i=0; i< target.length; i++) {
-			require(target[i].call.value(value[i])(data[i]), 'unsuccesful call');
+			(bool success, bytes memory data) = target[i].call.value(value[i])(data[i]);
+
+			require(success, 'unsuccesful call');
 		}
 		return true;
 	}
