@@ -1,4 +1,4 @@
-pragma solidity ^0.4.24;
+pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 import "./ECTools.sol";
@@ -7,17 +7,17 @@ contract MetaBatchProxy {
 
 	address public owner;
 
-	function() public payable {}
+	function() external payable {}
 
-	constructor(address _owner) {
+	constructor(address _owner) public {
 		owner = _owner;
 	}
 
-	function getSigner(bytes32 raw, bytes sig) public view returns(address signer) {
+	function getSigner(bytes32 raw, bytes memory sig) public view returns(address signer) {
 		return ECTools.prefixedRecover(raw, sig);
 	}
 
-	modifier onlyValidSignature(address[] target, uint256[] value, bytes[] data, bytes[] dataHashSignature) {
+	modifier onlyValidSignature(address[] memory target, uint256[] memory value, bytes[] memory data, bytes[] memory dataHashSignature) {
 		require(target.length <= 8, 'Too much batched transactions');
 
 		for(uint i=0; i< target.length; i++) {
@@ -37,7 +37,7 @@ contract MetaBatchProxy {
      * @param dataHashSignature - signed bytes of the keccak256 of target, nonce, value and data keccak256(target, nonce, value, data)
      */
 
-	function execute(address[] target, uint256[] value, bytes[] data, bytes[] dataHashSignature) public onlyValidSignature(target, value, data, dataHashSignature) returns (bool) {
+	function execute(address[] memory target, uint256[] memory value, bytes[] memory data, bytes[] memory dataHashSignature) public onlyValidSignature(target, value, data, dataHashSignature) returns (bool) {
 		// solium-disable-next-line security/no-call-value
 		for(uint i=0; i< target.length; i++) {
 			require(target[i].call.value(value[i])(data[i]), 'unsuccesful call');
