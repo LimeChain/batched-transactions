@@ -1,4 +1,4 @@
-pragma solidity ^0.4.23;
+pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
@@ -13,7 +13,7 @@ contract Billboard is Ownable {
     mapping(address => uint256) public moneySpent;
     string public slogan;
 
-    constructor(address _tokenContract) {
+    constructor(address _tokenContract) public {
         tokenContract = _tokenContract;
     }
 
@@ -37,7 +37,7 @@ contract Billboard is Ownable {
      * functions
      */
 
-    function buy(string newSlogan, uint tokens) public payable {
+    function buy(string memory newSlogan, uint tokens) public payable {
         require(tokens > price, "The ether sent was too low");
 
         billboardOwner = msg.sender;

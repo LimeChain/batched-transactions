@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
 
 library ECTools {
 
@@ -7,7 +7,7 @@ library ECTools {
    * @param originalMessage bytes32 message, the originalMessage is the signed message. What is recovered is the signer address.
    * @param signedMessage bytes signature
    */
-  function recover(bytes32 originalMessage, bytes signedMessage) public pure returns (address) {
+  function recover(bytes32 originalMessage, bytes memory signedMessage) public pure returns (address) {
     bytes32 r;
     bytes32 s;
     uint8 v;
@@ -39,10 +39,10 @@ library ECTools {
 
   function toEthereumSignedMessage(bytes32 _msg) public view returns (bytes32) {
     bytes memory prefix = "\x19Ethereum Signed Message:\n32";
-    return keccak256(prefix, _msg);
+    return keccak256(abi.encodePacked(prefix, _msg));
   }
 
-  function prefixedRecover(bytes32 _msg, bytes sig) public view returns (address) {
+  function prefixedRecover(bytes32 _msg, bytes memory sig) public view returns (address) {
     bytes32 ethSignedMsg = toEthereumSignedMessage(_msg);
     return recover(ethSignedMsg, sig);
   }

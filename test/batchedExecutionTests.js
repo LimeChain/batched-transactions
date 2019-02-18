@@ -21,8 +21,7 @@ describe('Example', () => {
     before(async () => {
 
         deployer = new etherlime.EtherlimeGanacheDeployer('0x823d590ed2cb5e8493bb0efc834771c1cde36f9fc49b9fe3620ebd0754ad6ea2');
-        wallet = deployer.wallet;
-
+        wallet = deployer.signer;
         // Deploying contracts
         MetaTokenContract = await deployer.deploy(MetaToken);
         ECToolsContract = await deployer.deploy(ECTools);
